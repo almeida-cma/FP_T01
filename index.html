@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lógica de Programação | Portugol Webstudio - Guia Completo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #0f172a; line-height: 1.5; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem; }
+        
+        .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 1.5rem; padding: 2rem; margin-bottom: 2rem; }
+        .hero h1 { font-size: 2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .hero-badge { background: #ff8c42; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; }
+        .platform-link { background: #ff8c42; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border-radius: 2rem; margin-top: 1rem; transition: 0.2s; }
+        .platform-link a { color: white; text-decoration: none; font-weight: 600; }
+        .platform-link:hover { background: #e67e22; transform: translateY(-2px); }
+        
+        .tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+        .tab-btn { background: transparent; border: none; padding: 0.7rem 1.5rem; font-weight: 600; cursor: pointer; border-radius: 2rem; transition: 0.2s; color: #475569; }
+        .tab-btn.active { background: #ff8c42; color: white; }
+        .tab-btn:hover:not(.active) { background: #e2e8f0; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .card { background: white; border-radius: 1.2rem; padding: 1.5rem; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); margin-bottom: 1.5rem; border: 1px solid #e2e8f0; }
+        .section-title { font-size: 1.4rem; font-weight: 700; margin: 1.5rem 0 1rem 0; border-left: 5px solid #ff8c42; padding-left: 1rem; display: flex; align-items: center; gap: 0.7rem; }
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: 'Fira Code', monospace; padding: 1.2rem; border-radius: 0.8rem; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; border-left: 4px solid #ff8c42; line-height: 1.5; white-space: pre; }
+        .btn { background: #ff8c42; border: none; padding: 0.5rem 1.2rem; border-radius: 2rem; font-weight: 600; cursor: pointer; font-size: 0.85rem; margin-right: 0.5rem; margin-top: 0.5rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-outline { background: transparent; border: 1px solid #ff8c42; color: #ff8c42; }
+        .btn-outline:hover { background: #ff8c42; color: white; }
+        .btn:hover { background: #e67e22; transform: scale(0.97); color: white; }
+        .output-console { background: #0f172a; color: #a5f3c3; padding: 1rem; border-radius: 0.8rem; font-family: monospace; margin-top: 1rem; white-space: pre-wrap; }
+        .grid-2cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+        .timeline { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0; }
+        .timeline-item { display: flex; gap: 1rem; align-items: flex-start; }
+        .timeline-year { background: #ff8c42; color: white; padding: 0.2rem 0.8rem; border-radius: 20px; font-weight: bold; min-width: 70px; text-align: center; }
+        .table-langs { width: 100%; border-collapse: collapse; background: #fff; border-radius: 0.8rem; overflow: hidden; }
+        .table-langs td, .table-langs th { border: 1px solid #cbd5e1; padding: 0.6rem; vertical-align: top; }
+        .table-langs th { background: #f1f5f9; }
+        .warning-box { background: #fef3c7; border-left: 5px solid #f59e0b; padding: 1rem; border-radius: 0.8rem; margin: 1rem 0; }
+        .footer-note { background: #eef2ff; border-radius: 1rem; padding: 1.5rem; text-align: center; }
+        @media (max-width: 768px) { .hero h1 { font-size: 1.3rem; } .tab-btn { padding: 0.4rem 1rem; font-size: 0.8rem; } .code-block { font-size: 0.7rem; white-space: pre-wrap; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1><i class="fas fa-code"></i> Lógica de Programação <span class="hero-badge">Portugol Webstudio</span></h1>
+        <p>Fundamentos: Algoritmos | História | Níveis | Paradigmas | Prática com Portugol Webstudio</p>
+        <div class="platform-link"><i class="fas fa-rocket"></i><a href="https://portugol.dev" target="_blank">Acessar Portugol Webstudio →</a></div>
+        <div class="warning-box" style="background: rgba(255,255,255,0.15); margin-top:1rem; border-left-color:#ff8c42;">
+            <i class="fas fa-info-circle"></i> <strong>Ferramenta utilizada:</strong> Portugol Webstudio (https://portugol.dev) - ambiente online moderno.
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('teoria')"><i class="fas fa-book"></i> Teoria Completa</button>
+        <button class="tab-btn" onclick="switchTab('pratica')"><i class="fas fa-laptop-code"></i> Prática com Portugol</button>
+        <button class="tab-btn" onclick="switchTab('exercicios')"><i class="fas fa-puzzle-piece"></i> Exercícios</button>
+    </div>
+
+    <!-- ABA TEORIA -->
+    <div id="teoria" class="tab-content active">
+        <div class="card">
+            <h3><i class="fas fa-history"></i> História e Evolução das Linguagens</h3>
+            <p><strong>Linguagem de programação</strong> é um conjunto de instruções que dizem ao computador o que fazer. Nas décadas de 1940, usava-se <strong>linguagem de máquina</strong> (binário). Surgiu então o <strong>Assembly</strong>, com mnemônicos.</p>
+            <div class="timeline">
+                <div class="timeline-item"><span class="timeline-year">1940s</span> Linguagem de máquina (binário)</div>
+                <div class="timeline-item"><span class="timeline-year">1950s</span> Assembly, FORTRAN, COBOL, ALGOL</div>
+                <div class="timeline-item"><span class="timeline-year">1970s</span> C, Simula 67 (classes), Smalltalk (POO)</div>
+                <div class="timeline-item"><span class="timeline-year">1980-90s</span> C++, Python, Java, JavaScript, PHP</div>
+                <div class="timeline-item"><span class="timeline-year">2000+</span> C#, Ruby, Swift, Kotlin, TypeScript</div>
+            </div>
+            <p><i class="fab fa-youtube"></i> Vídeos: <a href="https://youtu.be/qyfFw6oWuTk" target="_blank">O que é Programação?</a> | <a href="https://youtu.be/z1XTcKKRbKM" target="_blank">Principais Linguagens</a></p>
+        </div>
+
+        <div class="grid-2cols">
+            <div class="card">
+                <h3><i class="fas fa-microchip"></i> Níveis de Programação</h3>
+                <p><strong>🔻 Baixo nível:</strong> Próximo ao hardware (Assembly).<br>
+                <strong>🔺 Alto nível:</strong> Próximo à linguagem humana (Python, Java, JavaScript, C#).</p>
+                <p><strong>Compilador x Interpretador:</strong><br>
+                Compilador: traduz todo o código antes da execução (C, C++).<br>
+                Interpretador: traduz e executa linha a linha (Python, JavaScript).</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-diagram-project"></i> Paradigmas de Programação</h3>
+                <ul style="margin-left:1.2rem">
+                    <li><strong>Estruturada:</strong> sequência, decisão, repetição</li>
+                    <li><strong>Modular:</strong> código dividido em módulos</li>
+                    <li><strong>Orientação a Objetos:</strong> objetos com atributos/métodos</li>
+                    <li><strong>Orientação a Eventos:</strong> fluxo guiado por ações do usuário</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-table-list"></i> Principais Linguagens do Mercado</h3>
+            <table class="table-langs">
+                <tr><th>Linguagens Antigas</th><th>Linguagens Modernas</th><th>Linguagens Web</th></tr>
+                <tr><td>ALGOL, COBOL, FORTRAN, Assembly</td><td>C#, C++, Java, Python, Ruby, Swift</td><td>JavaScript, PHP, TypeScript, HTML/CSS</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-brain"></i> Lógica e Algoritmo</h3>
+            <p><strong>Lógica:</strong> conjunto ordenado de instruções para alcançar um objetivo.<br>
+            <strong>Algoritmo:</strong> sequência finita de passos para resolver um problema.<br>
+            <strong>Código-fonte:</strong> texto escrito pelo programador.<br>
+            <strong>Programa executável:</strong> código convertido para linguagem de máquina.</p>
+        </div>
+    </div>
+
+    <!-- ABA PRÁTICA: TODOS OS EXEMPLOS COM INDENTAÇÃO CORRETA -->
+    <div id="pratica" class="tab-content">
+        <div class="card">
+            <h3><i class="fab fa-portugal"></i> Portugol Webstudio - Sintaxe Oficial</h3>
+            <p>O <strong>Portugol Webstudio</strong> (portugol.dev) é um ambiente online moderno. <strong>Sintaxe correta com indentação:</strong></p>
+            <div class="code-block" id="estruturaBase">
+programa {
+    funcao inicio() {
+        // seu código aqui
+        escreva("Olá, mundo!")
+    }
+}
+            </div>
+            <button class="btn" onclick="copiarTexto('estruturaBase')"><i class="fas fa-copy"></i> Copiar estrutura</button>
+        </div>
+
+        <div class="grid-2cols">
+            <div class="card">
+                <h3>Exemplo 1: Saudação</h3>
+                <div class="code-block" id="ex1">
+programa {
+    funcao inicio() {
+        escreva("Olá, mundo da programação!")
+    }
+}
+                </div>
+                <button class="btn" onclick="copiarTexto('ex1')">Copiar</button>
+                <button class="btn btn-outline" onclick="simular('ex1')">Simular</button>
+                <div id="simEx1" class="output-console" style="display:none;"></div>
+            </div>
+            <div class="card">
+                <h3>Exemplo 2: Entrada de Dados</h3>
+                <div class="code-block" id="ex2">
+programa {
+    funcao inicio() {
+        cadeia nome
+        
+        escreva("Digite seu nome: ")
+        leia(nome)
+        escreva("Olá, ", nome, "! Bem-vindo ao Portugol!")
+    }
+}
+                </div>
+                <button class="btn" onclick="copiarTexto('ex2')">Copiar</button>
+                <button class="btn btn-outline" onclick="simularEntrada()">Simular</button>
+                <div id="simEx2" class="output-console" style="display:none;"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Exemplo 3: Estrutura Condicional (se/senao)</h3>
+            <div class="code-block" id="ex3">
+programa {
+    funcao inicio() {
+        real nota
+        
+        escreva("Digite a nota do aluno: ")
+        leia(nota)
+        
+        se (nota >= 7) {
+            escreva("Aprovado! Parabéns!")
+        } senao {
+            escreva("Reprovado. Estude mais!")
+        }
+    }
+}
+            </div>
+            <button class="btn" onclick="copiarTexto('ex3')">Copiar</button>
+            <button class="btn btn-outline" onclick="simularCondicional()">Simular</button>
+            <div id="simEx3" class="output-console" style="display:none;"></div>
+        </div>
+
+        <div class="card">
+            <h3>Exemplo 4: Laço de Repetição (para)</h3>
+            <div class="code-block" id="ex4">
+programa {
+    funcao inicio() {
+        para (inteiro i = 1; i <= 5; i++) {
+            escreva("Contagem: ", i, "\n")
+        }
+        escreva("Fim da contagem!")
+    }
+}
+            </div>
+            <button class="btn" onclick="copiarTexto('ex4')">Copiar</button>
+            <button class="btn btn-outline" onclick="simularLaco()">Simular</button>
+            <div id="simEx4" class="output-console" style="display:none;"></div>
+        </div>
+
+        <div class="card">
+            <h3>Operadores e Estruturas (Portugol Webstudio)</h3>
+            <div class="grid-2cols">
+                <div>
+                    <p><strong>Operadores Aritméticos:</strong> +, -, *, /, %</p>
+                    <p><strong>Operadores de Comparação:</strong> ==, !=, >, <, >=, <=</p>
+                    <p><strong>Operadores Lógicos:</strong> e, ou, nao</p>
+                </div>
+                <div>
+                    <p><strong>Estruturas de Controle:</strong></p>
+                    <pre style="background:#f1f5f9; padding:0.8rem; border-radius:0.5rem; font-size:0.8rem; overflow-x:auto;">
+se (condicao) {
+    // código
+} senao {
+    // código
+}
+
+enquanto (condicao) {
+    // código
+}
+
+para (inteiro i = 0; i < 10; i++) {
+    // código
+}
+
+escolha (variavel) {
+    caso 1:
+        // código
+    caso 2:
+        // código
+    senao:
+        // código padrão
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABA EXERCÍCIOS COM INDENTAÇÃO -->
+    <div id="exercicios" class="tab-content">
+        <div class="card">
+            <h3>Exercícios Resolvidos (Portugol Webstudio)</h3>
+            <div class="grid-2cols">
+                <div>
+                    <p><strong>1. Ditado Popular</strong></p>
+                    <div class="code-block" id="ditado">
+programa {
+    funcao inicio() {
+        escreva("A persistência é o caminho do êxito.\n")
+        escreva("Quem espera sempre alcança.\n")
+        escreva("A pressa é inimiga da perfeição.")
+    }
+}
+                    </div>
+                    <button class="btn" onclick="copiarTexto('ditado')">Copiar</button>
+                </div>
+                <div>
+                    <p><strong>2. Par ou Ímpar</strong></p>
+                    <div class="code-block" id="parimpar">
+programa {
+    funcao inicio() {
+        inteiro num
+        
+        escreva("Digite um número: ")
+        leia(num)
+        
+        se (num % 2 == 0) {
+            escreva(num, " é PAR")
+        } senao {
+            escreva(num, " é ÍMPAR")
+        }
+    }
+}
+                    </div>
+                    <button class="btn" onclick="copiarTexto('parimpar')">Copiar</button>
+                </div>
+            </div>
+            <div class="grid-2cols" style="margin-top:1rem;">
+                <div>
+                    <p><strong>3. Média com Aprovação</strong></p>
+                    <div class="code-block" id="media">
+programa {
+    funcao inicio() {
+        real n1, n2, n3, media
+        
+        escreva("Nota 1: ")
+        leia(n1)
+        escreva("Nota 2: ")
+        leia(n2)
+        escreva("Nota 3: ")
+        leia(n3)
+        
+        media = (n1 + n2 + n3) / 3
+        
+        se (media >= 7) {
+            escreva("Aprovado! Média: ", media)
+        } senao {
+            escreva("Reprovado. Média: ", media)
+        }
+    }
+}
+                    </div>
+                    <button class="btn" onclick="copiarTexto('media')">Copiar</button>
+                </div>
+                <div>
+                    <p><strong>4. Tabuada</strong></p>
+                    <div class="code-block" id="tabuada">
+programa {
+    funcao inicio() {
+        inteiro num
+        
+        escreva("Digite um número: ")
+        leia(num)
+        
+        para (inteiro i = 1; i <= 10; i++) {
+            escreva(num, " x ", i, " = ", num * i, "\n")
+        }
+    }
+}
+                    </div>
+                    <button class="btn" onclick="copiarTexto('tabuada')">Copiar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Desafios para Praticar</h3>
+            <div class="grid-2cols">
+                <div>
+                    <p><strong>Desafio 1:</strong> Soma de dois números</p>
+                    <p><strong>Desafio 2:</strong> Maior de três números</p>
+                    <p><strong>Desafio 3:</strong> Fatorial de um número</p>
+                </div>
+                <div>
+                    <p><strong>Desafio 4:</strong> Contagem regressiva de 10 até 0</p>
+                    <p><strong>Desafio 5:</strong> Calculadora simples com escolha</p>
+                    <p><strong>Desafio 6:</strong> Números primos até N</p>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="mostrarDicas()">Ver dicas</button>
+            <div id="dicas" class="output-console" style="display:none;"></div>
+        </div>
+
+        <div class="card">
+            <h3>Questões de Fixação (TEMA 01)</h3>
+            <ol style="margin-left:1.5rem">
+                <li>O que são linguagens de programação?</li>
+                <li>O que significa linguagem de baixo nível?</li>
+                <li>Cite duas linguagens de baixo nível e três de alto nível.</li>
+                <li>O que é Portugol?</li>
+                <li>Qual a diferença entre compilador e interpretador?</li>
+                <li>Defina código-fonte e programa executável.</li>
+                <li>Quais são os quatro paradigmas de programação?</li>
+                <li>Qual a sintaxe básica de um programa no Portugol Webstudio?</li>
+            </ol>
+            <button class="btn btn-outline" onclick="mostrarRespostas()">Ver respostas</button>
+            <div id="respostas" class="output-console" style="display:none;"></div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <i class="fas fa-graduation-cap"></i> <strong>Material baseado no TEMA 01</strong> – História, conceitos, níveis, paradigmas e prática com <strong>Portugol Webstudio</strong> (portugol.dev).<br>
+        <i class="fas fa-code"></i> Todos os exemplos seguem <strong>indentação padrão</strong> para melhor legibilidade.
+    </div>
+</div>
+
+<script>
+    // Função para alternar abas
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    // Função universal para copiar texto de qualquer elemento pelo ID
+    function copiarTexto(elementId) {
+        const elemento = document.getElementById(elementId);
+        if (!elemento) {
+            alert("Erro: elemento não encontrado!");
+            return;
+        }
+        
+        // Pega o texto exato do elemento (preserva indentação)
+        const texto = elemento.innerText;
+        
+        navigator.clipboard.writeText(texto).then(() => {
+            alert("✅ Código copiado! Cole no Portugol Webstudio (portugol.dev)");
+        }).catch(() => {
+            // Fallback para navegadores antigos
+            const textarea = document.createElement('textarea');
+            textarea.value = texto;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert("✅ Código copiado! Cole no Portugol Webstudio (portugol.dev)");
+        });
+    }
+
+    // Simulações
+    function simular(tipo) {
+        if(tipo === 'ex1') {
+            let div = document.getElementById('simEx1');
+            div.style.display = 'block';
+            div.innerHTML = "▶️ Saída do programa:\n\nOlá, mundo da programação!";
+        }
+    }
+
+    function simularEntrada() {
+        let nome = prompt("Digite um nome para simular:");
+        if(nome) {
+            let div = document.getElementById('simEx2');
+            div.style.display = 'block';
+            div.innerHTML = `▶️ Simulação de execução:\n\nDigite seu nome: ${nome}\nOlá, ${nome}! Bem-vindo ao Portugol!`;
+        }
+    }
+
+    function simularCondicional() {
+        let nota = prompt("Digite a nota do aluno (0-10):");
+        if(nota !== null) {
+            let n = parseFloat(nota);
+            let div = document.getElementById('simEx3');
+            div.style.display = 'block';
+            if(n >= 7) {
+                div.innerHTML = `▶️ Resultado:\n\nNota: ${n}\nAprovado! Parabéns!`;
+            } else {
+                div.innerHTML = `▶️ Resultado:\n\nNota: ${n}\nReprovado. Estude mais!`;
+            }
+        }
+    }
+
+    function simularLaco() {
+        let div = document.getElementById('simEx4');
+        div.style.display = 'block';
+        let output = "▶️ Saída do laço:\n\n";
+        for(let i = 1; i <= 5; i++) {
+            output += `Contagem: ${i}\n`;
+        }
+        output += "Fim da contagem!";
+        div.innerHTML = output;
+    }
+
+    function mostrarDicas() {
+        let div = document.getElementById('dicas');
+        div.style.display = 'block';
+        div.innerHTML = `📌 Dicas para os desafios:\n\n` +
+            `• Desafio 1: Use leia() para dois números e mostre a soma com escreva()\n` +
+            `• Desafio 2: Use se (a > b) e se (a > c) para encontrar o maior\n` +
+            `• Desafio 3: Use um laço para multiplicar os números de 1 até N\n` +
+            `• Desafio 4: Use para (inteiro i = 10; i >= 0; i--)\n` +
+            `• Desafio 5: Use escolha (opcao) com casos para +, -, *, /\n` +
+            `• Desafio 6: Use um laço interno para verificar divisores`;
+    }
+
+    function mostrarRespostas() {
+        let div = document.getElementById('respostas');
+        div.style.display = 'block';
+        div.innerHTML = `📖 RESPOSTAS DAS QUESTÕES DE FIXAÇÃO:\n\n` +
+            `1. Linguagens de programação são conjuntos de instruções que permitem comunicar tarefas ao computador.\n\n` +
+            `2. Linguagem de baixo nível trabalha próxima ao hardware (ex: Assembly).\n\n` +
+            `3. Baixo nível: Assembly, C (considerado médio/baixo). Alto nível: Python, Java, JavaScript, C#, PHP.\n\n` +
+            `4. Portugol é uma pseudolinguagem didática em português para ensinar lógica de programação.\n\n` +
+            `5. Compilador traduz todo o código antes da execução; interpretador traduz e executa linha por linha.\n\n` +
+            `6. Código-fonte é o texto escrito pelo programador. Programa executável é o código convertido para linguagem de máquina.\n\n` +
+            `7. Paradigmas: Estruturada, Modular, Orientada a Objetos, Orientada a Eventos.\n\n` +
+            `8. Sintaxe: programa { funcao inicio() { } }`;
+    }
+</script>
+</body>
+</html>

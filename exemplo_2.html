@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Lógica Interativa | Simulações Visuais de Sequência, Decisão e Repetição</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .hero p {
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #ff8c42;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255,140,66,0.3);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sim-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3);
+        }
+
+        .sim-header {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .sim-header.sequencia { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+        .sim-header.decisao { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+        .sim-header.repeticao { background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; }
+
+        .sim-header i {
+            font-size: 1.8rem;
+        }
+
+        .sim-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .sim-body {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .sim-visual {
+            background: #f1f5f9;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sim-code {
+            background: #1e293b;
+            border-radius: 1rem;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: #e2e8f0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .sim-controls {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-sim {
+            background: #ff8c42;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-sim:hover {
+            background: #e67e22;
+            transform: scale(0.98);
+        }
+
+        .btn-reset {
+            background: #64748b;
+        }
+
+        .btn-reset:hover {
+            background: #475569;
+        }
+
+        .result-area {
+            background: #0f172a;
+            color: #a5f3c3;
+            padding: 0.8rem;
+            border-radius: 0.8rem;
+            font-family: monospace;
+            margin-top: 0.8rem;
+            font-size: 0.8rem;
+            width: 100%;
+            text-align: left;
+        }
+
+        .passo-item {
+            background: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin: 0.2rem;
+        }
+
+        .passo-feito {
+            background: #38ef7d;
+            color: white;
+        }
+
+        .escolha-buttons {
+            display: flex;
+            gap: 0.8rem;
+            margin: 0.8rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .opcao-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .opcao-btn:hover {
+            background: #cbd5e1;
+        }
+
+        .treino-progress {
+            width: 100%;
+            background: #e2e8f0;
+            border-radius: 1rem;
+            height: 20px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .treino-fill {
+            background: #4facfe;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .unha-item {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .unha-icon {
+            width: 45px;
+            height: 45px;
+            background: #cbd5e1;
+            border-radius: 30% 30% 40% 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .unha-feita {
+            background: #ec489a;
+            color: white;
+        }
+
+        @media (max-width: 800px) {
+            .sim-body {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 { font-size: 1.5rem; }
+            .tab-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1><i class="fas fa-hand-pointer"></i> Lógica Interativa <i class="fas fa-brain"></i></h1>
+        <p>Clique, execute e veja a lógica de programação funcionando visualmente!</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('sequencia')"><i class="fas fa-list-ol"></i> Sequência</button>
+        <button class="tab-btn" onclick="switchTab('decisao')"><i class="fas fa-code-branch"></i> Decisão</button>
+        <button class="tab-btn" onclick="switchTab('repeticao')"><i class="fas fa-sync-alt"></i> Repetição</button>
+    </div>
+
+    <!-- ==================== SEQUÊNCIA ==================== -->
+    <div id="sequencia" class="tab-content active">
+        <!-- Receita Bolo -->
+        <div class="sim-card">
+            <div class="sim-header sequencia">
+                <i class="fas fa-cake-candles"></i>
+                <h3>🍰 Sequência: Fazer Bolo de Chocolate</h3>
+            </div>
+            <div class="sim-body">
+                <div class="sim-visual">
+                    <div>
+                        <i class="fas fa-egg" style="font-size: 2rem;"></i>
+                        <div id="boloPassosContainer" style="margin: 1rem 0;"></div>
+                        <div id="boloResultado" style="font-weight: bold; min-height: 50px;"></div>
+                    </div>
+                    <div class="sim-controls">
+                        <button class="btn-sim" onclick="proximoPassoBolo()"><i class="fas fa-play"></i> Próximo Passo</button>
+                        <button class="btn-sim btn-reset" onclick="resetarBolo()"><i class="fas fa-undo-alt"></i> Resetar</button>
+                    </div>
+                </div>
+                <div class="sim-code">
+                    <strong>📜 Algoritmo (Portugol):</strong><br>
+                    programa {<br>
+                    &nbsp;&nbsp;  funcao inicio() {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;      preaquecer_forno()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;      misturar_ingredientes()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;      assar(30)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;      escreva("Bolo pronto!")<br>
+                    &nbsp;&nbsp;  }<br>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Cobrança Pênalti -->
+        <div class="sim-card">
+            <div class="sim-header sequencia">
+                <i class="fas fa-futbol"></i>
+                <h3>⚽ Sequência: Cobrança de Pênalti</h3>
+            </div>
+            <div class="sim-body">
+                <div class="sim-visual">
+                    <div>
+                        <i class="fas fa-futbol" style="font-size: 3rem;"></i>
+                        <div id="penaltiStatus" style="margin: 0.8rem 0; font-weight: 500;"></div>
+                        <div id="penaltiResultado" style="font-size: 1.2rem;"></div>
+                    </div>
+                    <div class="sim-controls">
+                        <button class="btn-sim" onclick="proximoPassoPenalti()"><i class="fas fa-play"></i> Próximo Passo</button>
+                        <button class="btn-sim btn-reset" onclick="resetarPenalti()"><i class="fas fa-undo-alt"></i> Resetar</button>
+                    </div>
+                </div>
+                <div class="sim-code">
+                    <strong>📜 Algoritmo (Portugol):</strong><br>
+                    programa {<br>
+                    &nbsp;&nbsp;  funcao inicio() {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;      posicionar_bola()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;      dar_tres_passos()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;      correr()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;      chutar()<br>
+                    &nbsp;&nbsp;  }<br>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DECISÃO ==================== -->
+    <div id="decisao" class="tab-content">
+        <!-- Skincare -->
+        <div class="sim-card">
+            <div class="sim-header decisao">
+                <i class="fas fa-spa"></i>
+                <h3>💄 Decisão: Rotina de Skincare</h3>
+            </div>
+            <div class="sim-body">
+                <div class="sim-visual">
+                    <div>
+                        <i class="fas fa-face-smile" style="font-size: 2.5rem;"></i>
+                        <div class="escolha-buttons">
+                            <button class="opcao-btn" onclick="escolherPele('oleosa')">Pele Oleosa</button>
+                            <button class="opcao-btn" onclick="escolherPele('seca')">Pele Seca</button>
+                            <button class="opcao-btn" onclick="escolherPele('normal')">Pele Normal</button>
+                        </div>
+                        <div id="skincareResultado" class="result-area" style="background: #e2e8f0; color: #0f172a;"></div>
+                    </div>
+                </div>
+                <div class="sim-code">
+                    <strong>📜 Algoritmo (Portugol):</strong><br>
+                    SE (tipo_pele == "oleosa") {<br>
+                    &nbsp;&nbsp;  usar("gel de limpeza")<br>
+                    } SENAO SE (tipo_pele == "seca") {<br>
+                    &nbsp;&nbsp;  usar("creme hidratante")<br>
+                    } SENAO {<br>
+                    &nbsp;&nbsp;  usar("produto suave")<br>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Jogo Game Over -->
+        <div class="sim-card">
+            <div class="sim-header decisao">
+                <i class="fas fa-gamepad"></i>
+                <h3>🎮 Decisão: Personagem na Batalha</h3>
+            </div>
+            <div class="sim-body">
+                <div class="sim-visual">
+                    <div>
+                        <div id="vidaIcon" style="font-size: 1.8rem;">❤️ ❤️ ❤️</div>
+                        <div id="vidaValor" style="font-size: 1.5rem; font-weight: bold;">Vida: 30</div>
+                        <div class="sim-controls">
+                            <button class="btn-sim" onclick="tomarDano(20)">Dano (20)</button>
+                            <button class="btn-sim" onclick="tomarDano(40)">Dano Forte (40)</button>
+                            <button class="btn-sim btn-reset" onclick="resetarVida()">Curar</button>
+                        </div>
+                        <div id="jogoResultado" class="result-area" style="background: #e2e8f0; color: #0f172a;"></div>
+                    </div>
+                </div>
+                <div class="sim-code">
+                    <strong>📜 Algoritmo (Portugol):</strong><br>
+                    SE (vida <= 0) {<br>
+                    &nbsp;&nbsp;  escreva("Game Over!")<br>
+                    } SENAO {<br>
+                    &nbsp;&nbsp;  escreva("Continue lutando!")<br>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== REPETIÇÃO ==================== -->
+    <div id="repeticao" class="tab-content">
+        <!-- Treino Academia -->
+        <div class="sim-card">
+            <div class="sim-header repeticao">
+                <i class="fas fa-dumbbell"></i>
+                <h3>🏋️ Repetição: Treino de Academia</h3>
+            </div>
+            <div class="sim-body">
+                <div class="sim-visual">
+                    <div>
+                        <i class="fas fa-dumbbell" style="font-size: 2rem;"></i>
+                        <div class="treino-progress">
+                            <div id="treinoBar" class="treino-fill"></div>
+                        </div>
+                        <div id="treinoContador" style="margin: 0.5rem 0;">Repetições: 0 / 10</div>
+                        <div class="sim-controls">
+                            <button class="btn-sim" onclick="adicionarRepeticao()"><i class="fas fa-plus"></i> 1 repetição</button>
+                            <button class="btn-sim" onclick="completarTreino()"><i class="fas fa-forward"></i> Todas (10x)</button>
+                            <button class="btn-sim btn-reset" onclick="resetarTreino()"><i class="fas fa-undo-alt"></i> Resetar</button>
+                        </div>
+                        <div id="treinoResultado" class="result-area"></div>
+                    </div>
+                </div>
+                <div class="sim-code">
+                    <strong>📜 Algoritmo (Portugol):</strong><br>
+                    repeticoes = 0<br>
+                    ENQUANTO (repeticoes < 10) {<br>
+                    &nbsp;&nbsp;  fazer_agachamento()<br>
+                    &nbsp;&nbsp;  repeticoes = repeticoes + 1<br>
+                    }<br>
+                    escreva("Treino concluído!")
+                </div>
+            </div>
+        </div>
+
+        <!-- Esmalte nas Unhas -->
+        <div class="sim-card">
+            <div class="sim-header repeticao">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3>💅 Repetição: Aplicar Esmalte</h3>
+            </div>
+            <div class="sim-body">
+                <div class="sim-visual">
+                    <div>
+                        <div id="unhasContainer" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin: 1rem 0;"></div>
+                        <div class="sim-controls">
+                            <button class="btn-sim" onclick="aplicarProximaUnha()"><i class="fas fa-hand-peace"></i> Próxima unha</button>
+                            <button class="btn-sim" onclick="aplicarTodasUnhas()"><i class="fas fa-forward"></i> Aplicar todas</button>
+                            <button class="btn-sim btn-reset" onclick="resetarUnhas()"><i class="fas fa-undo-alt"></i> Resetar</button>
+                        </div>
+                        <div id="esmalteResultado" class="result-area"></div>
+                    </div>
+                </div>
+                <div class="sim-code">
+                    <strong>📜 Algoritmo (Portugol):</strong><br>
+                    PARA (unha = 1; unha <= 10; unha++) {<br>
+                    &nbsp;&nbsp;  aplicar_base(unha)<br>
+                    &nbsp;&nbsp;  aplicar_esmalte(unha)<br>
+                    }<br>
+                    escreva("Unhas feitas!")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ========== FUNÇÃO PARA TROCAR ABAS ==========
+    function switchTab(tabId) {
+        // Esconder todas as abas
+        const tabs = document.querySelectorAll('.tab-content');
+        for (let i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove('active');
+        }
+        
+        // Remover classe active de todos os botões
+        const buttons = document.querySelectorAll('.tab-btn');
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('active');
+        }
+        
+        // Mostrar a aba selecionada
+        const selectedTab = document.getElementById(tabId);
+        if (selectedTab) {
+            selectedTab.classList.add('active');
+        }
+        
+        // Ativar o botão clicado
+        const clickedButton = event ? event.target : null;
+        if (clickedButton && clickedButton.classList) {
+            clickedButton.classList.add('active');
+        }
+    }
+
+    // ========== SEQUÊNCIA - BOLO ==========
+    const boloPassos = ["Pré-aquecer forno a 180°C", "Misturar farinha, açúcar, ovos e chocolate", "Assar por 30 minutos", "Esfriar e servir"];
+    let boloAtual = 0;
+
+    function atualizarBolo() {
+        const container = document.getElementById('boloPassosContainer');
+        if (!container) return;
+        
+        let html = '';
+        for (let i = 0; i < boloPassos.length; i++) {
+            const classe = i < boloAtual ? 'passo-item passo-feito' : 'passo-item';
+            html += `<span class="${classe}">${i+1}. ${boloPassos[i]}</span>`;
+        }
+        container.innerHTML = html;
+        
+        const resultado = document.getElementById('boloResultado');
+        if (boloAtual === boloPassos.length) {
+            resultado.innerHTML = "🍰 Bolo pronto! Delicioso! 🎉";
+            resultado.style.color = "#38ef7d";
+        } else {
+            resultado.innerHTML = `⏳ Próximo: ${boloPassos[boloAtual]}`;
+            resultado.style.color = "#f59e0b";
+        }
+    }
+
+    function proximoPassoBolo() {
+        if (boloAtual < boloPassos.length) {
+            boloAtual++;
+            atualizarBolo();
+        }
+    }
+    
+    function resetarBolo() { 
+        boloAtual = 0; 
+        atualizarBolo(); 
+    }
+
+    // ========== SEQUÊNCIA - PÊNALTI ==========
+    const penaltiPassos = ["Posicionar bola na marca", "Dar 3 passos para trás", "Correr em direção à bola", "Chutar com força no canto"];
+    let penaltiAtual = 0;
+
+    function atualizarPenalti() {
+        const statusDiv = document.getElementById('penaltiStatus');
+        const resultadoDiv = document.getElementById('penaltiResultado');
+        if (!statusDiv) return;
+        
+        if (penaltiAtual === penaltiPassos.length) {
+            statusDiv.innerHTML = "✅ Todos os passos executados!";
+            resultadoDiv.innerHTML = "⚽ GOL! Cobrança perfeita! 🏆";
+            resultadoDiv.style.color = "#38ef7d";
+        } else {
+            statusDiv.innerHTML = `📋 Passo ${penaltiAtual + 1}: ${penaltiPassos[penaltiAtual]}`;
+            resultadoDiv.innerHTML = "";
+        }
+    }
+
+    function proximoPassoPenalti() {
+        if (penaltiAtual < penaltiPassos.length) {
+            penaltiAtual++;
+            atualizarPenalti();
+        }
+    }
+    
+    function resetarPenalti() { 
+        penaltiAtual = 0; 
+        atualizarPenalti(); 
+    }
+
+    // ========== DECISÃO - SKINCARE ==========
+    function escolherPele(tipo) {
+        const resultado = document.getElementById('skincareResultado');
+        if (!resultado) return;
+        
+        let produto = "";
+        if (tipo === "oleosa") {
+            produto = "🧴 Gel de limpeza adstringente + protetor solar oil free";
+        } else if (tipo === "seca") {
+            produto = "🧴 Creme hidratante intensivo + óleo facial nutritivo";
+        } else {
+            produto = "🧴 Loção suave + água termal + protetor solar";
+        }
+        resultado.innerHTML = `✅ Para pele ${tipo}: ${produto}<br><br><small>🔍 Lógica: SE (pele == "oleosa") ENTÃO gel; SENAO SE (pele == "seca") ENTÃO creme; SENAO produto suave.</small>`;
+    }
+
+    // ========== DECISÃO - JOGO ==========
+    let vida = 30;
+    
+    function atualizarJogo() {
+        const vidaIcon = document.getElementById('vidaIcon');
+        const vidaValor = document.getElementById('vidaValor');
+        const resultado = document.getElementById('jogoResultado');
+        if (!vidaIcon) return;
+        
+        const coracoes = vida > 0 ? '❤️'.repeat(Math.ceil(vida/10)) : '💀';
+        vidaIcon.innerHTML = coracoes;
+        vidaValor.innerHTML = `Vida: ${vida}`;
+        
+        if (vida <= 0) {
+            resultado.innerHTML = "💀 GAME OVER! O personagem morreu. 💀<br><small>🔍 Lógica: SE (vida <= 0) ENTÃO Game Over</small>";
+            resultado.style.background = "#fee2e2";
+        } else {
+            resultado.innerHTML = "⚔️ Personagem ainda vive! Continue a batalha!<br><small>🔍 Lógica: SE (vida > 0) ENTÃO continua o jogo</small>";
+            resultado.style.background = "#e2f0e2";
+        }
+    }
+    
+    function tomarDano(dano) {
+        if (vida > 0) {
+            vida = Math.max(0, vida - dano);
+            atualizarJogo();
+        }
+    }
+    
+    function resetarVida() { 
+        vida = 30; 
+        atualizarJogo(); 
+    }
+
+    // ========== REPETIÇÃO - TREINO ==========
+    let repeticoes = 0;
+    
+    function atualizarTreino() {
+        const bar = document.getElementById('treinoBar');
+        const contador = document.getElementById('treinoContador');
+        const resultado = document.getElementById('treinoResultado');
+        if (!bar) return;
+        
+        bar.style.width = (repeticoes / 10 * 100) + '%';
+        contador.innerHTML = `Repetições: ${repeticoes} / 10`;
+        
+        if (repeticoes >= 10) {
+            resultado.innerHTML = "🏆 Treino concluído! Músculos crescendo! 💪<br><small>🔍 Lógica: ENQUANTO (repeticoes < 10) repete o movimento</small>";
+        } else {
+            resultado.innerHTML = `⏳ Faltam ${10 - repeticoes} repetições. Continue!`;
+        }
+    }
+    
+    function adicionarRepeticao() {
+        if (repeticoes < 10) {
+            repeticoes++;
+            atualizarTreino();
+        }
+    }
+    
+    function completarTreino() { 
+        repeticoes = 10; 
+        atualizarTreino(); 
+    }
+    
+    function resetarTreino() { 
+        repeticoes = 0; 
+        atualizarTreino(); 
+    }
+
+    // ========== REPETIÇÃO - UNHAS ==========
+    let unhas = [false, false, false, false, false, false, false, false, false, false];
+    
+    function renderUnhas() {
+        const container = document.getElementById('unhasContainer');
+        const resultado = document.getElementById('esmalteResultado');
+        if (!container) return;
+        
+        let html = '';
+        for (let i = 0; i < unhas.length; i++) {
+            const classe = unhas[i] ? 'unha-icon unha-feita' : 'unha-icon';
+            const icone = unhas[i] ? '💅' : '🖐️';
+            html += `<div class="unha-item">
+                <div class="${classe}">${icone}</div>
+                <span style="font-size: 10px">${i+1}</span>
+            </div>`;
+        }
+        container.innerHTML = html;
+        
+        const feitas = unhas.filter(u => u).length;
+        if (feitas === 10) {
+            resultado.innerHTML = "✨ Todas as unhas estão lindas! Esmalte aplicado com sucesso! ✨<br><small>🔍 Lógica: PARA (unha = 1 ATÉ 10) aplique esmalte</small>";
+        } else {
+            resultado.innerHTML = `💅 Unhas feitas: ${feitas}/10. Clique para aplicar nas próximas!`;
+        }
+    }
+    
+    function aplicarProximaUnha() {
+        const proxima = unhas.findIndex(u => !u);
+        if (proxima !== -1) {
+            unhas[proxima] = true;
+            renderUnhas();
+        }
+    }
+    
+    function aplicarTodasUnhas() { 
+        for (let i = 0; i < unhas.length; i++) {
+            unhas[i] = true;
+        }
+        renderUnhas(); 
+    }
+    
+    function resetarUnhas() { 
+        for (let i = 0; i < unhas.length; i++) {
+            unhas[i] = false;
+        }
+        renderUnhas(); 
+    }
+
+    // ========== INICIALIZAÇÃO ==========
+    atualizarBolo();
+    atualizarPenalti();
+    atualizarJogo();
+    atualizarTreino();
+    renderUnhas();
+</script>
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lógica Divertida | Aprenda Programação com Exemplos do Dia a Dia</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .hero {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero h1 i {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Seção de estruturas */
+        .structures {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .structure-card {
+            background: white;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .structure-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .card-header.sequencia { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+        .card-header.decisao { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+        .card-header.repeticao { background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; }
+
+        .card-header i {
+            font-size: 2.5rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+        }
+
+        .card-header p {
+            margin-left: auto;
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,0,0,0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+
+        .examples-grid {
+            padding: 1.5rem 2rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .example-item {
+            background: #f8fafc;
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .example-item:hover {
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1);
+            transform: scale(1.02);
+        }
+
+        .example-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-icon.culinaria { color: #f59e0b; }
+        .example-icon.esportes { color: #3b82f6; }
+        .example-icon.jogos { color: #8b5cf6; }
+        .example-icon.cosmeticos { color: #ec489a; }
+        .example-icon.viagem { color: #06b6d4; }
+
+        .example-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-desc {
+            color: #475569;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .code-preview {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            padding: 0.8rem;
+            border-radius: 0.8rem;
+            overflow-x: auto;
+            white-space: pre;
+            margin: 0.8rem 0;
+            border-left: 3px solid;
+        }
+
+        .sequencia .code-preview { border-left-color: #38ef7d; }
+        .decisao .code-preview { border-left-color: #f5576c; }
+        .repeticao .code-preview { border-left-color: #00f2fe; }
+
+        .btn-explicar {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-explicar:hover {
+            background: #e2e8f0;
+        }
+
+        .explicacao {
+            background: #f1f5f9;
+            padding: 0.8rem;
+            border-radius: 0.8rem;
+            margin-top: 0.8rem;
+            font-size: 0.8rem;
+            display: none;
+            color: #0f172a;
+        }
+
+        .explicacao.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Rodapé */
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 2rem;
+        }
+
+        .footer i {
+            margin: 0 0.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .card-header h2 { font-size: 1.3rem; }
+            .card-header p { font-size: 0.7rem; }
+            .examples-grid { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1>
+            <i class="fas fa-magic"></i>
+            A Lógica da Programação
+            <i class="fas fa-code"></i>
+        </h1>
+        <p>Descubra como Sequência, Decisão e Repetição estão presentes no seu dia a dia!<br>Da cozinha ao campo de futebol, dos cosméticos aos videogames.</p>
+        <div class="badge-container">
+            <span class="badge"><i class="fas fa-list-ol"></i> Sequência</span>
+            <span class="badge"><i class="fas fa-code-branch"></i> Decisão</span>
+            <span class="badge"><i class="fas fa-sync-alt"></i> Repetição</span>
+        </div>
+    </div>
+
+    <div class="structures">
+        <!-- SEÇÃO SEQUÊNCIA -->
+        <div class="structure-card">
+            <div class="card-header sequencia">
+                <i class="fas fa-list-ol"></i>
+                <h2>SEQUÊNCIA</h2>
+                <p>passo a passo | ordem importa</p>
+            </div>
+            <div class="examples-grid">
+                <!-- Culinária -->
+                <div class="example-item">
+                    <div class="example-icon culinaria"><i class="fas fa-utensils"></i></div>
+                    <div class="example-title">🍳 Receita: Bolo de Chocolate</div>
+                    <div class="example-desc">Fazer um bolo exige seguir os passos na ordem certa. Se misturar os ingredientes antes de pré-aquecer o forno, pode dar errado!</div>
+                    <div class="code-preview">
+1. Pré-aqueça o forno a 180°C
+2. Misture farinha, açúcar e ovos
+3. Adicione chocolate em pó
+4. Leve ao forno por 30 min
+5. Espere esfriar e sirva
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>🧠 Lógica de programação:</strong> Na programação, a <strong>sequência</strong> significa executar instruções uma após a outra, na ordem em que foram escritas. Assim como uma receita, se um passo for trocado, o resultado pode ser diferente! É a base de todo algoritmo.
+                    </div>
+                </div>
+
+                <!-- Esportes -->
+                <div class="example-item">
+                    <div class="example-icon esportes"><i class="fas fa-futbol"></i></div>
+                    <div class="example-title">⚽ Cobrança de Pênalti</div>
+                    <div class="example-desc">Um jogador segue uma sequência: posicionar a bola, respirar, correr, chutar. Qualquer alteração pode comprometer o gol.</div>
+                    <div class="code-preview">
+1. Posicione a bola na marca
+2. Dê 3 passos para trás
+3. Aguarde o apito
+4. Corra em direção à bola
+5. Chute com força no canto
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>⚽ Programação é igual:</strong> Um algoritmo também segue uma sequência lógica. Primeiro a entrada (posicionar), depois o processamento (correr, chutar) e por fim a saída (gol ou não). Ordem é tudo!
+                    </div>
+                </div>
+
+                <!-- Viagem -->
+                <div class="example-item">
+                    <div class="example-icon viagem"><i class="fas fa-plane-departure"></i></div>
+                    <div class="example-title">✈️ Preparar uma Viagem</div>
+                    <div class="example-desc">Viajar exige passos em sequência: escolher destino, comprar passagem, fazer mala, ir ao aeroporto.</div>
+                    <div class="code-preview">
+1. Escolha o destino
+2. Pesquise passagens
+3. Compre a passagem
+4. Faça as malas
+5. Vá ao aeroporto
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>🗺️ No código:</strong> Um programa também executa em sequência. Se você tentar "fazer as malas" antes de "escolher o destino", o programa não faria sentido. A sequência organiza o raciocínio.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO DECISÃO -->
+        <div class="structure-card">
+            <div class="card-header decisao">
+                <i class="fas fa-code-branch"></i>
+                <h2>DECISÃO</h2>
+                <p>se... senão | escolhas | condições</p>
+            </div>
+            <div class="examples-grid">
+                <!-- Cosmeticos -->
+                <div class="example-item">
+                    <div class="example-icon cosmeticos"><i class="fas fa-spa"></i></div>
+                    <div class="example-title">💄 Rotina de Skincare</div>
+                    <div class="example-desc">Escolher o produto certo depende do tipo de pele. SE é oleosa, use gel; SENÃO, use creme hidratante.</div>
+                    <div class="code-preview">
+SE (tipo_pele == "oleosa") {
+    usar("gel de limpeza")
+} SENAO {
+    usar("creme hidratante")
+}
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>🧴 Decisão na programação:</strong> O "SE" testa uma condição. Se for verdadeira, executa um bloco; senão, executa outro. É como um "se isso, faça aquilo" do dia a dia.
+                    </div>
+                </div>
+
+                <!-- Jogos -->
+                <div class="example-item">
+                    <div class="example-icon jogos"><i class="fas fa-gamepad"></i></div>
+                    <div class="example-title">🎮 Jogo: Personagem morreu?</div>
+                    <div class="example-desc">Em um jogo, SE a vida chegar a zero, o personagem morre e o jogo acaba. SENÃO, ele continua.</div>
+                    <div class="code-preview">
+SE (vida <= 0) {
+    mostrar("Game Over")
+    finalizar_jogo()
+} SENAO {
+    continuar_jogo()
+}
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>🎮 Decisão nos games:</strong> Toda ação em jogos depende de decisões. Se o jogador apertar "pular" e houver obstáculo, ele desvia. São estruturas de decisão que criam interatividade.
+                    </div>
+                </div>
+
+                <!-- Esportes -->
+                <div class="example-item">
+                    <div class="example-icon esportes"><i class="fas fa-basketball-ball"></i></div>
+                    <div class="example-title">🏀 Arremesso no Basquete</div>
+                    <div class="example-desc">O técnico decide: SE o jogador está livre, arremesse; SENÃO, passe a bola.</div>
+                    <div class="code-preview">
+SE (marcador_esta_perto == falso) {
+    arremessar()
+} SENAO {
+    passar_bola()
+}
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>🏀 Decisão no esporte:</strong> Assim como no código, os atletas tomam decisões baseadas em condições. "Se estiver marcado, passe; se não, finalize". É pura lógica!
+                    </div>
+                </div>
+
+                <!-- Culinária extra -->
+                <div class="example-item">
+                    <div class="example-icon culinaria"><i class="fas fa-mug-hot"></i></div>
+                    <div class="example-title">☕ Café com ou sem açúcar?</div>
+                    <div class="example-desc">Ao servir café, você decide: SE a pessoa pediu com açúcar, adicione; SENÃO, sirva puro.</div>
+                    <div class="code-preview">
+SE (pediu_acucar == verdadeiro) {
+    adicionar_acucar()
+}
+servir_cafe()
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>☕ Decisão simples:</strong> Um "SE" pode ser usado sozinho também. Se a condição for verdadeira, faz algo; se não, apenas segue em frente. É como perguntar antes de agir.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO REPETIÇÃO -->
+        <div class="structure-card">
+            <div class="card-header repeticao">
+                <i class="fas fa-sync-alt"></i>
+                <h2>REPETIÇÃO</h2>
+                <p>laços | enquanto | para</p>
+            </div>
+            <div class="examples-grid">
+                <!-- Esportes -->
+                <div class="example-item">
+                    <div class="example-icon esportes"><i class="fas fa-dumbbell"></i></div>
+                    <div class="example-title">🏋️ Treino: 10 repetições</div>
+                    <div class="example-desc">Um atleta repete o mesmo movimento várias vezes. "Enquanto não completar 10, continue".</div>
+                    <div class="code-preview">
+repeticoes = 0
+ENQUANTO (repeticoes < 10) {
+    fazer_agachamento()
+    repeticoes = repeticoes + 1
+}
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>🏋️ Repetição nos treinos:</strong> O laço "ENQUANTO" repete um bloco enquanto uma condição for verdadeira. No código, é usado para repetir tarefas sem precisar escrever o mesmo comando várias vezes.
+                    </div>
+                </div>
+
+                <!-- Jogos -->
+                <div class="example-item">
+                    <div class="example-icon jogos"><i class="fas fa-chess-board"></i></div>
+                    <div class="example-title">🎲 Jogo: Rodada de Dados</div>
+                    <div class="example-desc">Enquanto ninguém vencer, o jogo continua. Cada rodada repete as jogadas.</div>
+                    <div class="code-preview">
+ENQUANTO (vencedor == "") {
+    jogador1.jogar_dado()
+    jogador2.jogar_dado()
+    vencedor = verificar_vencedor()
+}
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>🎮 Loop infinito? Não!</strong> Enquanto uma condição for verdadeira, o código repete. Quando a condição muda, o loop acaba. É assim que jogos mantêm a partida ativa até alguém ganhar.
+                    </div>
+                </div>
+
+                <!-- Cosmeticos -->
+                <div class="example-item">
+                    <div class="example-icon cosmeticos"><i class="fas fa-hand-holding-heart"></i></div>
+                    <div class="example-title">💅 Aplicar esmalte nas unhas</div>
+                    <div class="example-desc">Repetir o processo para cada unha: passar base, esmalte, secar. Até terminar todas.</div>
+                    <div class="code-preview">
+PARA (unha = 1; unha <= 10; unha++) {
+    aplicar_base(unha)
+    aplicar_esmalte(unha)
+    secar()
+}
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>💅 Laço "PARA":</strong> Usamos "PARA" quando sabemos exatamente quantas vezes repetir. Aqui, 10 vezes, uma para cada unha. É prático e evita repetir código manualmente.
+                    </div>
+                </div>
+
+                <!-- Culinária -->
+                <div class="example-item">
+                    <div class="example-icon culinaria"><i class="fas fa-bread-slice"></i></div>
+                    <div class="example-title">🍞 Fatiar pão</div>
+                    <div class="example-desc">Repetir o corte até que o pão esteja completamente fatiado.</div>
+                    <div class="code-preview">
+ENQUANTO (pao_nao_fatiado) {
+    fatiar()
+    pedacos_fatiados++
+}
+                    </div>
+                    <button class="btn-explicar" onclick="toggleExplicacao(this)"><i class="fas fa-lightbulb"></i> Entender lógica</button>
+                    <div class="explicacao">
+                        <strong>🍞 Enquanto não terminar:</strong> O loop "ENQUANTO" é ótimo quando não sabemos exatamente quantas vezes repetir. Repete até que a condição seja satisfeita.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <i class="fas fa-heart"></i> Programar é como organizar a vida: sequência, decisões e repetições! 
+        <i class="fas fa-laptop-code"></i><br>
+        <small>Pratique no <strong>Portugol Webstudio</strong> (portugol.dev) e crie seus próprios algoritmos!</small>
+    </div>
+</div>
+
+<script>
+    function toggleExplicacao(button) {
+        const explicacao = button.nextElementSibling;
+        explicacao.classList.toggle('show');
+        
+        // Mudar ícone do botão
+        const icon = button.querySelector('i');
+        if (explicacao.classList.contains('show')) {
+            button.style.background = "#e2e8f0";
+        } else {
+            button.style.background = "transparent";
+        }
+    }
+</script>
+</body>
+</html>
